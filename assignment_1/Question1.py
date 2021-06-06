@@ -328,9 +328,10 @@ ax.set_ylabel(r"$\theta_k$")
 ax = axs[1]
 for i in range(3):
     ax.hist(theta_chains[i], bins=30, label=rf'$\theta${i+1}')
-fig.legend()
+ax.legend()
 ax.set_ylabel("Posterior Probability")
 ax.set_xlabel(r"$\theta_k$")
+plt.savefig('q12_theta.png', dpi=300)
 
 
 # get bias chain and remove burn in
