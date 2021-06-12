@@ -114,7 +114,9 @@ mesh = np.array(np.meshgrid(x_arr, y_arr))
 combinations = mesh.T.reshape(-1, 2)
 
 arrs = encoded_imgs.T
-fig, axs = plt.subplots(7, 7, figsize=(20, 20))
+arrs = encoded_imgs.T
+fig, axs = plt.subplots(7, 7, figsize=(15, 15))
+label = False
 for i in range(8):
     for j in range(7):
         ax = axs[i-1, j]
@@ -126,12 +128,16 @@ for i in range(8):
         y = arrs[i]
         for n in range(10):
             k = np.where(labels == n)
-            ax.scatter(x[k], y[k], label=n)
+            if not label:
+                ax.scatter(x[k], y[k], label=n)
+            else:
+                ax.scatter(x[k], y[k])
+        label = True
         if i == 7:
             ax.set_xlabel(rf"$x_{j}$")
         if j == 0:
             ax.set_ylabel(rf"$x_{i}$")
-
+fig.legend(loc='center left', bbox_to_anchor=(0.3, 0.8))
 plt.tight_layout()
 plt.savefig('latent_space.png', dpi=300)
 
@@ -149,23 +155,23 @@ nx = 15
 ny = 15
 # how much of latent space we will plot
 x_min = 0
-x_max = 50
+x_max = 40
 y_min = 0
-y_max = 50
+y_max = 30
 
 xs = np.linspace(x_min, x_max, nx)
 ys = np.linspace(x_min, x_max, ny)
 
 # will plot how these change
-x5, x6 = np.meshgrid(xs, ys)
-shape = x5.shape
+x0, x5 = np.meshgrid(xs, ys)
+shape = x0.shape
 
 # get constant values for each other node
-x0 = np.full(shape, 10)
 x1 = np.full(shape, 20)
 x2 = np.full(shape, 20)
-x3 = np.full(shape, 20)
+x3 = np.full(shape, 10)
 x4 = np.full(shape, 20)
+x6 = np.full(shape, 10)
 x7 = np.full(shape, 20)
 
 full_grid = np.stack((x0, x1, x2, x3, x4, x5, x6, x7)).T
@@ -180,7 +186,7 @@ decoded_grid = decoded_grid.reshape(28*nx, 28*ny)
 fig, ax = plt.subplots(figsize=(10, 10))
 extent = [x_min, x_max, y_min, y_max]
 ax.imshow(decoded_grid, extent=extent)
-ax.set_xlabel(r"$x_5$")
-ax.set_ylabel(r"$x_6$")
+ax.set_xlabel(r"$x_0$")
+ax.set_ylabel(r"$x_5$")
 plt.tight_layout()
 plt.savefig('image_grid.png', dpi=300)
